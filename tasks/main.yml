@@ -1,7 +1,7 @@
 ---
 # tasks file for octools
 - name: login to openshift
-  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify https://osemaster.rdu.salab.redhat.com:8443
+  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify {{ ochost }}:{{ ocport }}
 
 - name: 
   get_url:
@@ -47,7 +47,7 @@
   when: "{{ autoscale }}"
 
 - name: login to openshift as user {{ username }}
-  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify https://osemaster.rdu.salab.redhat.com:8443
+  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify {{ ochost }}:{{ ocport }}
   when: "{{ sti }}"
 
 - name: switch to project
@@ -55,7 +55,7 @@
   when: "{{ sti }}"
 
 - name: create application
-  command: oc new-app {{ template }} -p APPLICATION_DOMAIN={{ apphostname }}.apps.rdu.salab.redhat.com
+  command: oc new-app {{ template }} -p APPLICATION_DOMAIN={{ apphostname }}.{{ appdomain }}
   when: "{{ quickapp }}" 
 
 - name: create application via sti
