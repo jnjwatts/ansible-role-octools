@@ -25,7 +25,7 @@ username: laurent
 pass: redhat
 contextdir: .
 number_of_instances: 1
-ochost: osemaster.local.domb.com
+ochost: https://osemaster.local.domb.com
 ocport: 8443
 appdomain: apps.local.domb.com
 
