@@ -1,4 +1,4 @@
-Role Name
+octools
 =========
 
 This role use oc tools to communicate with the openshift master
