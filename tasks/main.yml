@@ -1,7 +1,7 @@
 ---
 # tasks file for octools
 - name: login to openshift
-  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify {{ ochost }}:{{ ocport }}
+  command: oc login -u={{ ocp_user }} -p={{ ocp_pwd }} --insecure-skip-tls-verify {{ ocp_server }}:{{ ocport }}
 
 - name: 
   get_url:
@@ -16,7 +16,7 @@
   when: "{{ createtemplate }}" 
 
 - name: create oc project
-  command: oc new-project {{ projectname }}
+  command: oc new-project {{ ocp_project }}
   when: "{{ quickapp }}"
 
 - name: copy templates scaler.yaml and resourcelimits for pod autoscaling
@@ -32,26 +32,26 @@
   when: "{{ sti }}"
 
 - name: create oc project
-  command: oc new-project {{ projectname }}
+  command: oc new-project {{ ocp_project }}
   when: "{{ sti }}"
 
 - name: switch to project
-  command: oc project {{ projectname }}
+  command: oc project {{ ocp_project }}
 
 - name: login as admin to add user to project as admin
   command: oc login -u system:admin
   when: "{{ autoscale }}"
 
 - name: create resource limits for the project
-  command: oc create -f /tmp/resourcelimits.yaml -n {{ projectname }}
+  command: oc create -f /tmp/resourcelimits.yaml -n {{ ocp_project }}
   when: "{{ autoscale }}"
 
-- name: login to openshift as user {{ username }}
-  command: oc login -u={{ username }} -p={{ pass }} --insecure-skip-tls-verify {{ ochost }}:{{ ocport }}
+- name: login to openshift as user {{ ocp_user }}
+  command: oc login -u={{ ocp_user }} -p={{ ocp_pwd }} --insecure-skip-tls-verify {{ ocp_server }}:{{ ocport }}
   when: "{{ sti }}"
 
 - name: switch to project
-  command: oc project {{ projectname }}
+  command: oc project {{ ocp_project }}
   when: "{{ sti }}"
 
 - name: create application
@@ -67,7 +67,7 @@
   when: "{{ sti }}"
 
 - name: setup autoscaling
-  command: oc create -f /tmp/scalar.yaml -n {{ projectname }}
+  command: oc create -f /tmp/scalar.yaml -n {{ ocp_project }}
   when: "{{ autoscale }}"
 
 #- name: wait for hpa to come up
